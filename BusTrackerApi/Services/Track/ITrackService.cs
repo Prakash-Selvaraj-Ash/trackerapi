@@ -11,5 +11,6 @@ namespace BusTrackerApi.Services.Track
     {
         TrackResponse AddTrack(LiveTracker addTrackRequest);
         TrackResponse GetTrack(Guid busId);
+        void AddOrUpdateLiveTracker(string userId, string connectionId);
     }
 }

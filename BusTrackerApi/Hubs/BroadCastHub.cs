@@ -1,16 +1,24 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using BusTrackerApi.Services.Track;
+using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BusTrackerApi.Hubs
 {
     public class BroadCastHub : Hub<IHubClient>
     {
-        public override Task OnConnectedAsync()
+        private readonly ITrackService _trackService;
+
+        public BroadCastHub(ITrackService trackService)
         {
-            return base.OnConnectedAsync();
+            _trackService = trackService;
+        }
+
+        public void MapUserAndConnection(string userId)
+        {
+            Console.WriteLine($"'MapUserAndConnection' invoked. Parameter value: '{userId}");
+            Console.WriteLine($"Connection id for {userId}: {Context.ConnectionId}");
+
+            _trackService.AddOrUpdateLiveTracker(userId, Context.ConnectionId);
         }
     }
 }
