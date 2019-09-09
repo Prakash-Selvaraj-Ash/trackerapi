@@ -59,18 +59,32 @@ namespace BusTrackerApi.DbConnector
             return updatedSet.Entity;
         }
 
-        public Task<EntityEntry<TDomain>> CreateAsync<TDomain>(TDomain domain, CancellationToken cancellationToken)
+        public async Task<EntityEntry<TDomain>> CreateAsync<TDomain>(TDomain domain, CancellationToken cancellationToken)
             where TDomain : class, IDomain
         {
             var set = _busTrackContext.Set<TDomain>();
-            return set.AddAsync(domain, cancellationToken);
+            return await set.AddAsync(domain, cancellationToken);
         }
 
-        public Task<TDomain> ReadByIdAsync<TDomain>(Guid id, CancellationToken cancellationToken)
+        public async Task<TDomain> ReadByIdAsync<TDomain>(Guid id, CancellationToken cancellationToken)
             where TDomain : class, IDomain
         {
             var set = _busTrackContext.Set<TDomain>();
-            return set.FindAsync(id, cancellationToken);
+            return await set.FindAsync(id);
+        }
+
+        public async Task<TDomain[]> ReadAllAsync<TDomain>(CancellationToken token)
+            where TDomain : class, IDomain
+        {
+            var set = _busTrackContext.Set<TDomain>();
+            return await set.ToArrayAsync(token);
+        }
+
+        public async Task<TDomain[]> ReadByIdsAsync<TDomain>(Guid[] ids, CancellationToken token)
+            where TDomain : class, IDomain, IWithId
+        {
+            var set = _busTrackContext.Set<TDomain>();
+            return await set.Where(domain => ids.Contains(domain.Id)).ToArrayAsync(token);
         }
     }
 }

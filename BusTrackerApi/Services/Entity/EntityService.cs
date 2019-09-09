@@ -21,9 +21,9 @@ namespace BusTrackerApi.Services.Entity
             _context.SaveChanges();
         }
 
-        public void SaveAsync(CancellationToken cancellationToken)
+        public async Task SaveAsync(CancellationToken cancellationToken)
         {
-            _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

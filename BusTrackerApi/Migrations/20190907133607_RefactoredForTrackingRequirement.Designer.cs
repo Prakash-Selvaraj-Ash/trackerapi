@@ -3,15 +3,17 @@ using System;
 using BusTrackerApi.DbConnector;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BusTrackerApi.Migrations
 {
     [DbContext(typeof(BusTrackContext))]
-    partial class BusTrackContextModelSnapshot : ModelSnapshot
+    [Migration("20190907133607_RefactoredForTrackingRequirement")]
+    partial class RefactoredForTrackingRequirement
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

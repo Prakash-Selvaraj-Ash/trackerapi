@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using BusTrackerApi.DbConnector;
 using BusTrackerApi.Domains;
+using BusTrackerApi.Extensions;
 using BusTrackerApi.Hubs;
 using BusTrackerApi.Mappings;
 using BusTrackerApi.Repositories;
@@ -12,6 +9,7 @@ using BusTrackerApi.Services.BroadCast;
 using BusTrackerApi.Services.Bus;
 using BusTrackerApi.Services.BusTrack;
 using BusTrackerApi.Services.Entity;
+using BusTrackerApi.Services.GoogleMap;
 using BusTrackerApi.Services.Place;
 using BusTrackerApi.Services.PushService;
 using BusTrackerApi.Services.Route;
@@ -19,18 +17,17 @@ using BusTrackerApi.Services.Student;
 using BusTrackerApi.Services.Track;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace BusTrackerApi
 {
     public class Startup
     {
+        private const string ProdConnection = "ProdConnection";
+        private const string DefaultConnection = "DefaultConnection";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -44,9 +41,8 @@ namespace BusTrackerApi
             services.AddDbContext<BusTrackContext>(options => 
                 options
                 .UseLazyLoadingProxies()
-                .UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+                .UseNpgsql(Configuration.GetConnectionString(ProdConnection)));
 
-            //services.AddTransient(typeof(BusTrackContext));
             services.AddTransient<IQueryableConnector, DbConnector.DbConnector>();
 
             RegisterServices(services);
@@ -80,6 +76,7 @@ namespace BusTrackerApi
             services.AddTransient<IBusTrackService, BusTrackService>();
             services.AddTransient<IEntityService, EntityService>();
             services.AddTransient<IPushNotifyService, PushNotificationService>();
+            services.AddTransient<IGoogleMapService, GoogleMapService>();
         }
 
         private void RegisterMappings(IServiceCollection services)
@@ -96,6 +93,7 @@ namespace BusTrackerApi
 
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
+            MapperExtensions.Mapper = mapper;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

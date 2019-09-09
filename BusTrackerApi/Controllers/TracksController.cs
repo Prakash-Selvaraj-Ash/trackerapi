@@ -1,6 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Threading.Tasks;
 using BusTrackerApi.Domains;
 using BusTrackerApi.DTOS;
+using BusTrackerApi.Extensions;
 using BusTrackerApi.Services.Track;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,21 +13,29 @@ namespace BusTrackerApi.Controllers
     public class TracksController : Controller
     {
         private readonly ITrackService _trackService;
-        private readonly IMapper _mapper;
 
-        public TracksController(
-            ITrackService trackService,
-            IMapper mapper)
+        public TracksController(ITrackService trackService)
         {
             _trackService = trackService;
-            _mapper = mapper;
         }
 
         [HttpPost]
-        public TrackResponse StartTrack(AddTrackRequest trackRequest)
+        public async Task<TrackResponse> StartTrack(AddTrackRequest trackRequest)
         {
-            var tracker = _mapper.Map<LiveTracker>(trackRequest);
-            return _trackService.AddTrack(tracker);
+            var tracker = trackRequest.To<LiveTracker>();
+            return await _trackService.AddTrack(tracker);
+        }
+
+        [HttpGet("byBusId")]
+        public TrackResponse GetTrackByBus(Guid busId)
+        {
+            return _trackService.GetCachedTrack(busId);
+        }
+
+        [HttpGet("byUserId")]
+        public TrackResponse GetTrackByStudent(Guid studentId)
+        {
+            return _trackService.GetTrackByStudentId(studentId);
         }
     }
 }

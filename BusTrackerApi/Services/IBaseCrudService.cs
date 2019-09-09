@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BusTrackerApi.Services
@@ -14,5 +15,9 @@ namespace BusTrackerApi.Services
         TDomain Update(TDomain domain);
         TDomain ReadById(Guid id);
         IQueryable<TDomain> ReadByIds(Guid[] ids);
+        Task<TDomain[]> ReadAllAsync(CancellationToken token);
+        Task<TDomain> CreateAsync(TDomain domain, CancellationToken token);
+        Task<TDomain> ReadByIdAsync(Guid id, CancellationToken token);
+        Task<TDomain[]> ReadByIdsAsync(Guid[] ids, CancellationToken token);
     }
 }

@@ -8,6 +8,6 @@ namespace BusTrackerApi.Services.BroadCast
 {
     public interface IBroadCastService
     {
-        TrackResponse BroadCast(Guid busId);
+        Task<TrackResponse> BroadCast(Guid busId);
     }
 }

@@ -27,5 +27,9 @@ namespace BusTrackerApi.DbConnector
             where TDomain : class, IDomain;
         Task<EntityEntry<TDomain>> CreateAsync<TDomain>(TDomain domain, CancellationToken cancellationToken)
             where TDomain : class, IDomain;
+        Task<TDomain[]> ReadAllAsync<TDomain>(CancellationToken token)
+            where TDomain : class, IDomain;
+        Task<TDomain[]> ReadByIdsAsync<TDomain>(Guid[] ids, CancellationToken token)
+            where TDomain : class, IDomain, IWithId;
     }
 }

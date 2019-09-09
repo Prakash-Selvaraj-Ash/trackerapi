@@ -3,6 +3,7 @@ using System.Linq;
 using AutoMapper;
 using BusTrackerApi.Domains;
 using BusTrackerApi.DTOS;
+using BusTrackerApi.Extensions;
 using BusTrackerApi.Services.Place;
 using BusTrackerApi.Services.Route;
 using Microsoft.AspNetCore.Mvc;
@@ -14,17 +15,10 @@ namespace BusTrackerApi.Controllers
     public class RoutesController : ControllerBase
     {
         private readonly IRouteService _routeService;
-        private readonly IPlaceService _placeService;
-        private readonly IMapper _mapper;
 
-        public RoutesController(
-            IRouteService routeService,
-            IPlaceService placeService,
-            IMapper mapper)
+        public RoutesController(IRouteService routeService)
         {
             _routeService = routeService;
-            _placeService = placeService;
-            _mapper = mapper;
         }
 
         [HttpGet]
@@ -33,10 +27,10 @@ namespace BusTrackerApi.Controllers
             var Routes = _routeService.ReadAll().ToArray();
             return Routes.Select(r =>
             {
-                var routeResponse = _mapper.Map<RouteResponse>(r);
+                var routeResponse = r.To<RouteResponse>();
                 routeResponse.Places = _routeService
                     .ReadPlaces(routeResponse.Id)
-                    .Select(p => _mapper.Map<PlaceResponse>(p)).ToArray();
+                    .Select(p => p.To<PlaceResponse>()).ToArray();
                 return routeResponse;
             }).ToArray();
         }
@@ -45,10 +39,10 @@ namespace BusTrackerApi.Controllers
         public RouteResponse ReadById(Guid id)
         {
             var route = _routeService.ReadById(id);
-            var routeResponse = _mapper.Map<RouteResponse>(route);
+            var routeResponse = route.To<RouteResponse>();
             routeResponse.Places = _routeService
                 .ReadPlaces(routeResponse.Id)
-                .Select(p => _mapper.Map<PlaceResponse>(p)).ToArray();
+                .Select(p => p.To<PlaceResponse>()).ToArray();
             return routeResponse;
         }
 
@@ -56,7 +50,7 @@ namespace BusTrackerApi.Controllers
         [HttpPost]
         public RouteResponse Create(CreateRouteRequest routeRequest)
         {
-            var domain = _mapper.Map<Route>(routeRequest);
+            var domain = routeRequest.To<Route>();
             var createdRoute = _routeService.Create(domain);
 
             AddPlace(new CreateRoutePlaceRequest
@@ -73,11 +67,11 @@ namespace BusTrackerApi.Controllers
                 SequenceNumber = 2
             });
 
-            var routeResponse = _mapper.Map<RouteResponse>(createdRoute);
+            var routeResponse = createdRoute.To<RouteResponse>();
 
             routeResponse.Places = _routeService
                 .ReadPlaces(createdRoute.Id)
-                .Select(p => _mapper.Map<PlaceResponse>(p)).ToArray();
+                .Select(p => p.To<PlaceResponse>()).ToArray();
 
             return routeResponse;
         }
@@ -86,7 +80,7 @@ namespace BusTrackerApi.Controllers
         [Route("AddPlace")]
         public OkResult AddPlace(CreateRoutePlaceRequest request)
         {
-            var domain = _mapper.Map<RouteAssociation>(request);
+            var domain = request.To<RouteAssociation>();
             _routeService.AddPlace(domain);
             return Ok();
         }

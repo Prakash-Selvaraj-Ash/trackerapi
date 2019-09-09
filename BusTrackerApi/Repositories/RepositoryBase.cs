@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using BusTrackerApi.DbConnector;
 using BusTrackerApi.Domains;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BusTrackerApi.Repositories
 {
@@ -41,6 +44,26 @@ namespace BusTrackerApi.Repositories
         public IQueryable<TDomain> ReadByIds(Guid[] ids)
         {
             return Connector.ReadByIds<TDomain>(ids);
+        }
+
+        public async Task<TDomain[]> GetAllAsync(CancellationToken token)
+        {
+            return await Connector.ReadAllAsync<TDomain>(token);
+        }
+
+        public async Task<EntityEntry<TDomain>> CreateAsync(TDomain domain, CancellationToken token)
+        {
+            return await Connector.CreateAsync(domain, token);
+        }
+
+        public async Task<TDomain> ReadByIdAsync(Guid id, CancellationToken token)
+        {
+            return await Connector.ReadByIdAsync<TDomain>(id, token);
+        }
+
+        public async Task<TDomain[]> ReadByIdsAsync(Guid[] ids, CancellationToken token)
+        {
+            return await Connector.ReadByIdsAsync<TDomain>(ids, token);
         }
     }
 }

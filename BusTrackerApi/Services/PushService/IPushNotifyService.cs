@@ -1,4 +1,5 @@
-﻿using BusTrackerApi.DTOS;
+﻿using BusTrackerApi.Domains;
+using BusTrackerApi.DTOS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,7 @@ namespace BusTrackerApi.Services.PushService
     {
         Task<bool> SendPushNotification(string[] deviceTokens, string title, string body, object data);
         Task<bool> SendPushNotification(Message pushMessage);
+        Task<bool> NotifyUsers(BusTracker tracker);
+        Task<bool> NotifyBusStarted(BusTracker tracker);
     }
 }

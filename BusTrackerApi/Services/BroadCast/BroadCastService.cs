@@ -6,6 +6,7 @@ using BusTrackerApi.Repositories;
 using Microsoft.AspNetCore.SignalR;
 using System.Linq;
 using BusTrackerApi.Services.Track;
+using System.Threading.Tasks;
 
 namespace BusTrackerApi.Services.BroadCast
 {
@@ -24,7 +25,7 @@ namespace BusTrackerApi.Services.BroadCast
             _liveTrackerRepository = liveTrackerRepository;
             _trackService = trackService;
         }
-        public TrackResponse BroadCast(Guid busId)
+        public async Task<TrackResponse> BroadCast(Guid busId)
         {
             try
             {
@@ -33,11 +34,11 @@ namespace BusTrackerApi.Services.BroadCast
                     .Select(l => l.ConnectionId)
                     .ToArray();
 
-                var response = _trackService.GetTrack(busId);
+                var response = _trackService.GetCachedTrack(busId);
 
                 if (response != null && connectionIds.Length > 0)
                 {
-                    _hubContext.Clients.Clients(connectionIds).BroadCastTrack(response);
+                    await _hubContext.Clients.Clients(connectionIds).BroadCastTrack(response);
                 }
 
                 return response;

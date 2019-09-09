@@ -9,6 +9,6 @@ namespace BusTrackerApi.Services.Entity
     public interface IEntityService
     {
         void Save();
-        void SaveAsync(CancellationToken cancellationToken);
+        Task SaveAsync(CancellationToken cancellationToken);
     }
 }

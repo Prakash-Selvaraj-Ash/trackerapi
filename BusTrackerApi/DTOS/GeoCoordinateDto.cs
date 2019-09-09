@@ -14,5 +14,10 @@ namespace BusTrackerApi.DTOS
         }
         public double Lattitude { get; set; }
         public double Longitude { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Lattitude},{Longitude}";
+        }
     }
 }

@@ -14,8 +14,12 @@ namespace BusTrackerApi.Domains
         [ForeignKey("RouteId")]
         public virtual Route Route { get; set; }
         public Guid RouteId { get; set; }
-        public Guid LastDestinationId { get; set; }
+        public Guid? LastDestinationId { get; set; }
         public double CurrentLattitude { get; set; }
         public double CurrentLongitude { get; set; }
+        public double StartLattitude { get; set; }
+        public double StartLongitude { get; set; }
+        public string GDirection { get; set; }
+        public string CurrentRouteStatus { get; set; }
     }
 }

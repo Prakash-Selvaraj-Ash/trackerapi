@@ -2,6 +2,7 @@
 using AutoMapper;
 using BusTrackerApi.Domains;
 using BusTrackerApi.DTOS;
+using BusTrackerApi.Extensions;
 using BusTrackerApi.Services.Place;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,29 +13,25 @@ namespace BusTrackerApi.Controllers
     public class PlacesController : Controller
     {
         private readonly IPlaceService _placeService;
-        private readonly IMapper _mapper;
 
-        public PlacesController(
-            IPlaceService placeService,
-            IMapper mapper)
+        public PlacesController(IPlaceService placeService)
         {
             _placeService = placeService;
-            _mapper = mapper;
         }
 
         [HttpGet]
         public PlaceResponse[] ReadAll()
         {
             var places = _placeService.ReadAll().ToArray();
-            return places.Select(p => _mapper.Map<PlaceResponse>(p)).ToArray();
+            return places.Select(p => p.To<PlaceResponse>()).ToArray();
         }
 
         [HttpPost]
         public PlaceResponse Create(CreatePlaceRequest placeRequest)
         {
-            var domain = _mapper.Map<Place>(placeRequest);
+            var domain = placeRequest.To<Place>();
             var createdPlace = _placeService.Create(domain);
-            return _mapper.Map<PlaceResponse>(createdPlace);
+            return createdPlace.To<PlaceResponse>();
         }
     }
 }

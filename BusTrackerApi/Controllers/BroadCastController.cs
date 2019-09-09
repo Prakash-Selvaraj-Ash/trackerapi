@@ -27,7 +27,7 @@ namespace BusTrackerApi.Controllers
         [HttpPut]
         public async Task<TrackResponse> Notify(Guid busId)
         {
-            TrackResponse response = _service.BroadCast(busId);
+            TrackResponse response = await _service.BroadCast(busId);
             return response;
         }
     }
