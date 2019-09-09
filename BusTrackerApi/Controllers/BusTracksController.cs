@@ -26,7 +26,7 @@ namespace BusTrackerApi.Controllers
         }
 
         [HttpPost("StartBus")]
-        public async Task<OkObjectResult> StartBusTrack(CreateBusTrackRequest createBusTrackRequest, CancellationToken token = default)
+        public async Task<OkObjectResult> StartBusTrack(CreateBusTrackRequest createBusTrackRequest, CancellationToken token = default(CancellationToken))
         {
             var busTracker = createBusTrackRequest.To<BusTracker>();
             var createdBusTracker = await _busTrackService.CreateAsync(busTracker, token);
