@@ -97,8 +97,8 @@ namespace BusTrackerApi.Services.BusTrack
         public BusTrackResponseDto GetBusRouteByStudentId(Guid studentId)
         {
             var student = _studentRepository.ReadById(studentId);
-            var busTracker = _busTrackerRepository.Set.Single(bt => bt.RouteId == student.RouteId);
-            return busTracker.To<BusTrackResponseDto>();
+            var busTracker = _busTrackerRepository.Set.SingleOrDefault(bt => bt.RouteId == student.RouteId);
+            return busTracker?.To<BusTrackResponseDto>();
         }
     }
 }
