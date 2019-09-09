@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
 using BusTrackerApi.Domains;
 using BusTrackerApi.DTOS;
 using BusTrackerApi.Extensions;
-using BusTrackerApi.Services.Place;
 using BusTrackerApi.Services.Student;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusTrackerApi.Controllers
@@ -51,9 +46,7 @@ namespace BusTrackerApi.Controllers
 
             var createdStudent = _studentService.Create(student);
 
-            var studentResponse = createStudentRequest.To<StudentResponse>();
-
-            return studentResponse;
+            return ReadById(createdStudent.Id);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using BusTrackerApi.Domains;
+﻿using System.Linq;
+using BusTrackerApi.Domains;
 using BusTrackerApi.DTOS;
 using BusTrackerApi.Extensions;
 using BusTrackerApi.Services.Bus;
@@ -15,6 +16,13 @@ namespace BusTrackerApi.Controllers
         public BusesController(IBusService busService)
         {
             _busService = busService;
+        }
+
+        [HttpGet]
+        public OkObjectResult GetAll()
+        {
+            var buses = _busService.ReadAll().ToArray();
+            return Ok(buses);
         }
 
         [HttpPost]
