@@ -111,13 +111,13 @@ namespace BusTrackerApi
 
             app.UseCors(builder =>
             {
-                builder.WithOrigins("http://localhost:4200")
+                builder.AllowAnyOrigin()
                 .AllowAnyHeader().AllowAnyMethod().AllowCredentials();
             });
 
             app.UseSignalR(routes =>
             {
-                routes.MapHub<BroadCastHub>("/broadCast");
+                routes.MapHub<BroadCastHub>("/api/broadCast");
             });
             app.UseHttpsRedirection();
             app.UseMvc();
