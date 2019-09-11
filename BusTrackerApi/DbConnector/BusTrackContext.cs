@@ -17,5 +17,14 @@ namespace BusTrackerApi.DbConnector
         public DbSet<Route> Routes { get; set; }
         public DbSet<Place> Places { get; set; }
         public DbSet<RouteAssociation> RouteAssociations { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<BusTracker>()
+                .HasIndex(e => new { e.BusId, e.RouteId })
+                .IsUnique();
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
