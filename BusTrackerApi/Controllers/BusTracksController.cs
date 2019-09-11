@@ -44,9 +44,12 @@ namespace BusTrackerApi.Controllers
         }
 
         [HttpGet("byUserId")]
-        public OkObjectResult GetBusTrackByStudentId(Guid userId)
+        public IActionResult GetBusTrackByStudentId(Guid userId)
         {
-            return Ok(_busTrackService.GetBusRouteByStudentId(userId));
+            var result = _busTrackService.GetBusRouteByStudentId(userId);
+
+            if (result == null) { return NotFound(); }
+            else { return Ok(result); }
         }
 
         [HttpPut("UpdateLastDestination")]
