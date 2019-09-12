@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 using System.Linq;
 using BusTrackerApi.Services.Track;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace BusTrackerApi.Services.BroadCast
 {
@@ -38,7 +39,8 @@ namespace BusTrackerApi.Services.BroadCast
 
                 if (response != null && connectionIds.Length > 0)
                 {
-                    await _hubContext.Clients.Clients(connectionIds).BroadCastTrack(response);
+                    var serializedString = JsonConvert.SerializeObject(response);
+                    await _hubContext.Clients.Clients(connectionIds).BroadCastTrack(serializedString);
                 }
 
                 return response;

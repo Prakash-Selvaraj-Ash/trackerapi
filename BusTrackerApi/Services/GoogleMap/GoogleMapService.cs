@@ -50,7 +50,7 @@ namespace BusTrackerApi.Services.GoogleMap
             switch (service)
             {
                 case DirectionService:
-                    return "https://maps.googleapis.com/maps/api/directions/json?origin={0}&destination={1}&waypoints={2}&key=AIzaSyDJXHoRw6f7SuuH-YHHV5M03aa3wrL6SRA";
+                    return "https://maps.googleapis.com/maps/api/directions/json?provideRouteAlternatives=false&optimizeWaypoints=true&origin={0}&destination={1}&waypoints={2}&key=AIzaSyDJXHoRw6f7SuuH-YHHV5M03aa3wrL6SRA";
                 case DurationService:
                     return "https://maps.googleapis.com/maps/api/distancematrix/json?origins={0}&destinations={1}&key=AIzaSyDJXHoRw6f7SuuH-YHHV5M03aa3wrL6SRA";
                 default:

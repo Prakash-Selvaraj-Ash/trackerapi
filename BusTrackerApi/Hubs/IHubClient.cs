@@ -5,6 +5,6 @@ namespace BusTrackerApi.Hubs
 {
     public interface IHubClient
     {
-        Task BroadCastTrack(TrackResponse trackResponse);
+        Task BroadCastTrack(string trackResponse);
     }
 }
