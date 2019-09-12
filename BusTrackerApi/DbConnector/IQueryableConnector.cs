@@ -1,11 +1,10 @@
-﻿using BusTrackerApi.Domains;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BusTrackerApi.Domains;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BusTrackerApi.DbConnector
 {
@@ -22,6 +21,8 @@ namespace BusTrackerApi.DbConnector
         TDomain Update<TDomain>(TDomain domain)
             where TDomain : class, IDomain;
         TDomain Create<TDomain>(TDomain domain)
+            where TDomain : class, IDomain;
+        void DeleteAll<TDomain>()
             where TDomain : class, IDomain;
         Task<TDomain> ReadByIdAsync<TDomain>(Guid id, CancellationToken cancellationToken)
             where TDomain : class, IDomain;

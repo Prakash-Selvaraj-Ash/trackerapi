@@ -71,5 +71,11 @@ namespace BusTrackerApi.Services
             _entityService.Save();
             return updatedDomain;
         }
+
+        public virtual void DeleteAll()
+        {
+            _repository.DeleteAll();
+            _entityService.Save();
+        }
     }
 }

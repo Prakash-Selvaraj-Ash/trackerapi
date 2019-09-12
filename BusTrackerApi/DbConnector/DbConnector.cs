@@ -1,10 +1,10 @@
-﻿using BusTrackerApi.Domains;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BusTrackerApi.Domains;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BusTrackerApi.DbConnector
 {
@@ -42,6 +42,13 @@ namespace BusTrackerApi.DbConnector
         {
             var set = _busTrackContext.Set<TDomain>();
             return set.Find(id);
+        }
+
+        public void DeleteAll<TDomain>()
+            where TDomain : class, IDomain
+        {
+            var items = _busTrackContext.Set<TDomain>().ToArray();
+            _busTrackContext.Set<TDomain>().RemoveRange(items.ToArray());
         }
 
         public IQueryable<TDomain> ReadByIds<TDomain>(Guid[] ids)

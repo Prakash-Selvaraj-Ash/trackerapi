@@ -46,6 +46,11 @@ namespace BusTrackerApi.Repositories
             return Connector.ReadByIds<TDomain>(ids);
         }
 
+        public void DeleteAll()
+        {
+            Connector.DeleteAll<TDomain>();
+        }
+
         public async Task<TDomain[]> GetAllAsync(CancellationToken token)
         {
             return await Connector.ReadAllAsync<TDomain>(token);

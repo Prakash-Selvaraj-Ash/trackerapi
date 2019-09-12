@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using BusTrackerApi.Domains;
 using BusTrackerApi.DTOS;
@@ -17,6 +18,13 @@ namespace BusTrackerApi.Controllers
         public TracksController(ITrackService trackService)
         {
             _trackService = trackService;
+        }
+
+        [HttpGet()]
+        public LiveTracker[] ReadAll()
+        {
+            var trackers = _trackService.ReadAll();
+            return trackers.ToArray();
         }
 
         [HttpPost]

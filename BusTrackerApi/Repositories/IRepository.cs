@@ -17,6 +17,7 @@ namespace BusTrackerApi.Repositories
         IQueryable<TDomain> ReadByIds(Guid[] ids);
         TDomain Update(TDomain domain);
         TDomain Create(TDomain domain);
+        void DeleteAll();
         Task<TDomain[]> GetAllAsync(CancellationToken token);
         Task<EntityEntry<TDomain>> CreateAsync(TDomain domain, CancellationToken token);
         Task<TDomain> ReadByIdAsync(Guid id, CancellationToken token);

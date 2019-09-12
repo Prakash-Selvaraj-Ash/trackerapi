@@ -48,5 +48,12 @@ namespace BusTrackerApi.Controllers
 
             return ReadById(createdStudent.Id);
         }
+
+        [HttpDelete]
+        public OkResult DeleteAll()
+        {
+            _studentService.DeleteAll();
+            return Ok();
+        }
     }
 }

@@ -14,6 +14,7 @@ namespace BusTrackerApi.Services
         TDomain Create(TDomain domain);
         TDomain Update(TDomain domain);
         TDomain ReadById(Guid id);
+        void DeleteAll();
         IQueryable<TDomain> ReadByIds(Guid[] ids);
         Task<TDomain[]> ReadAllAsync(CancellationToken token);
         Task<TDomain> CreateAsync(TDomain domain, CancellationToken token);

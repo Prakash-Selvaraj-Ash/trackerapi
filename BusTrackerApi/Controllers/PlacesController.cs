@@ -1,5 +1,7 @@
-﻿using System.Linq;
-using AutoMapper;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using BusTrackerApi.Domains;
 using BusTrackerApi.DTOS;
 using BusTrackerApi.Extensions;
@@ -32,6 +34,20 @@ namespace BusTrackerApi.Controllers
             var domain = placeRequest.To<Place>();
             var createdPlace = _placeService.Create(domain);
             return createdPlace.To<PlaceResponse>();
+        }
+
+        [HttpPut]
+        public async Task<PlaceResponse> Create([FromBody]UpdatePlaceRequest placeRequest, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var dbDomain = await _placeService.ReadByIdAsync(placeRequest.PlaceId, cancellationToken);
+
+            dbDomain.Lattitude = placeRequest.Lattitude;
+            dbDomain.Longitude = placeRequest.Longitude;
+            dbDomain.Name = placeRequest.Name;
+
+            var updatedPlace = _placeService.Update(dbDomain);
+
+            return updatedPlace.To<PlaceResponse>();
         }
     }
 }

@@ -13,6 +13,8 @@ namespace BusTrackerApi.Mappings
         public PlaceProfile()
         {
             CreateMap<Place, PlaceResponse>();
+            CreateMap<UpdatePlaceRequest, Place>()
+                .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.PlaceId));
             CreateMap<Place, PlaceWithETAResponse>()
                 .ForMember(dest => dest.Duration, opts => opts.Ignore());
             CreateMap<CreatePlaceRequest, Place>()

@@ -9,6 +9,7 @@ namespace BusTrackerApi.Services.Track
 {
     public interface ITrackService
     {
+        IQueryable<LiveTracker> ReadAll();
         Task<TrackResponse> AddTrack(LiveTracker addTrackRequest);
         Task<TrackResponse> GetTrack(Guid busId);
         TrackResponse GetCachedTrack(Guid busId);

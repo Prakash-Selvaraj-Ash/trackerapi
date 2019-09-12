@@ -25,6 +25,13 @@ namespace BusTrackerApi.Controllers
             _pushNotifyService = notifyService;
         }
 
+        [HttpGet]
+        public async Task<OkObjectResult> ReadAll(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var busTracks = await _busTrackService.ReadAllAsync(cancellationToken);
+            return Ok(busTracks);
+        }
+
         [HttpPost("StartBus")]
         public async Task<OkObjectResult> StartBusTrack(CreateBusTrackRequest createBusTrackRequest, CancellationToken token = default(CancellationToken))
         {
@@ -63,6 +70,13 @@ namespace BusTrackerApi.Controllers
         public async Task<OkResult> UpdateCurrentLocation(UpdateCurrentLocationDto updateCurrentLocationDto)
         {
             await _busTrackService.UpdateCurrentLocation(updateCurrentLocationDto);
+            return Ok();
+        }
+
+        [HttpDelete]
+        public OkResult DeleteAll()
+        {
+            _busTrackService.DeleteAll();
             return Ok();
         }
     }
