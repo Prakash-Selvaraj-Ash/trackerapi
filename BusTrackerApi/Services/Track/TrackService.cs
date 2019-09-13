@@ -44,7 +44,8 @@ namespace BusTrackerApi.Services.Track
         {
             Guid studentId = Guid.Parse(userId);
             var studentDetail = _studentRepository.ReadById(studentId);
-            var busTracker = _busTrackerRepository.Set.Single(bt => bt.RouteId == studentDetail.RouteId);
+            var busTracker = _busTrackerRepository.Set.SingleOrDefault(bt => bt.RouteId == studentDetail.RouteId);
+            if(busTracker == null) { return; }
             var liveTracker = _liveTrackerRepository.Set.SingleOrDefault(lt => lt.BusId == busTracker.BusId && lt.StudentId == studentId);
 
             if (liveTracker != null)
