@@ -116,6 +116,12 @@ namespace BusTrackerApi.Services.Track
             var distanceResponse = await _googleMapService.GetDuration(
                 new GeoCoordinateDto(busTracker.CurrentLattitude, busTracker.CurrentLongitude),
                 placesVia.Select(p => new GeoCoordinateDto(p.Lattitude, p.Longitude)));
+
+            if(distanceResponse == null)
+            {
+                return placesVia.ToList<PlaceWithETAResponse>();
+            }
+
             var distanceMatrixResponse = JsonConvert.DeserializeObject<DistanceMatrixResponse>(distanceResponse);
 
             var durations = distanceMatrixResponse.Rows.First().RowElements

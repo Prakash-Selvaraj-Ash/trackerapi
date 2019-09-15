@@ -32,6 +32,8 @@ namespace BusTrackerApi.Services.GoogleMap
             string wayPointString = string
                 .Join("|", wayPoints.Select(wp => wp.ToString()));
 
+            if (string.IsNullOrWhiteSpace(wayPointString)) { return null; }
+
             var durationUrl = string.Format(baseUrlFormat, currentPoint.ToString(), wayPointString);
             return await GetResponse(durationUrl);
         }

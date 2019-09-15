@@ -53,36 +53,42 @@ namespace BusTrackerApi.Services.PushService
             var nextPlace = routeAssociations
                 .SkipWhile(ra => ra.PlaceId != tracker.LastDestinationId)
                 .Skip(1)
-                .First()
+                .FirstOrDefault()?
                 .Place;
 
+            var nextPlaceId = nextPlace?.Id;
+
             var studentsToNotify = _studentRepository.Set
-                .Where(s => s.PlaceId == tracker.LastDestinationId || s.PlaceId == nextPlace.Id)
+                .Where(s => s.PlaceId == tracker.LastDestinationId || s.PlaceId == nextPlaceId)
                 .ToArray();
 
             var studentsToNotifyForCompletedTrip = studentsToNotify.Where(s => s.PlaceId == tracker.LastDestinationId);
-            var studentsToNotifyForNextStop = studentsToNotify.Except(studentsToNotifyForCompletedTrip);
-
             var deviceIdsForCompletedTrip = studentsToNotifyForCompletedTrip.Select(s => s.FcmId).ToArray();
-            var deviceIdsForNextStop = studentsToNotifyForNextStop.Select(s => s.FcmId).ToArray();
 
             await SendPushNotification(
-                deviceIdsForCompletedTrip, 
-                "eMTe Bus Status", 
-                $"Bus reached {tracker.LastDestination.Name}", 
+                deviceIdsForCompletedTrip,
+                "eMTe Bus Status",
+                $"Bus reached {tracker.LastDestination.Name}",
                 null);
 
-            await SendPushNotification(
+            if (nextPlaceId.HasValue)
+            {
+                var studentsToNotifyForNextStop = studentsToNotify.Except(studentsToNotifyForCompletedTrip);
+                var deviceIdsForNextStop = studentsToNotifyForNextStop.Select(s => s.FcmId).ToArray();
+                await SendPushNotification(
                 deviceIdsForNextStop,
                 "eMTe Bus Status",
                 $"Bus reached {tracker.LastDestination.Name} & Next stop {nextPlace.Name} is yours",
                 null);
+            }
 
             return true;
         }
 
         public async Task<bool> SendPushNotification(string[] deviceTokens, string title, string body, object data)
         {
+            if(deviceTokens.Length == 0) { return false; }
+
             var message = new Message()
             {
                 notification = new Notification()
