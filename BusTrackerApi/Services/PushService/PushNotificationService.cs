@@ -45,8 +45,16 @@ namespace BusTrackerApi.Services.PushService
 
         public async Task<bool> NotifyUsers(BusTracker tracker)
         {
-            var routeAssociations = _routeAssociationRepository.Set.Where(ra => ra.RouteId == tracker.RouteId).ToArray();
-            var nextPlace = routeAssociations.SkipWhile(ra => ra.PlaceId != tracker.LastDestinationId).Skip(1).FirstOrDefault().Place;
+            var routeAssociations = _routeAssociationRepository.Set
+                .Where(ra => ra.RouteId == tracker.RouteId)
+                .OrderBy(ra => ra.SequenceNumber)
+                .ToArray();
+
+            var nextPlace = routeAssociations
+                .SkipWhile(ra => ra.PlaceId != tracker.LastDestinationId)
+                .Skip(1)
+                .First()
+                .Place;
 
             var studentsToNotify = _studentRepository.Set
                 .Where(s => s.PlaceId == tracker.LastDestinationId || s.PlaceId == nextPlace.Id)
