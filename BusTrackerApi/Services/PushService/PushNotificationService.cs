@@ -87,14 +87,18 @@ namespace BusTrackerApi.Services.PushService
 
         public async Task<bool> SendPushNotification(string[] deviceTokens, string title, string body, object data)
         {
-            if(deviceTokens.Length == 0) { return false; }
+            if (deviceTokens.Length == 0) { return false; }
 
-            var message = new Message()
+            var message = new Message
             {
-                notification = new Notification()
+                notification = new Notification
                 {
                     title = title,
                     text = body
+                },
+                data = new Data {
+                    click_action = "FLUTTER_NOTIFICATION_CLICK",
+                    sound = "default"
                 },
                 registration_ids = deviceTokens
             };

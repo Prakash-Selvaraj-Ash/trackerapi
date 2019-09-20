@@ -9,6 +9,13 @@ namespace BusTrackerApi.DTOS
     {
         public string[] registration_ids { get; set; }
         public Notification notification { get; set; }
+        public Data data { get; set; }
+    }
+
+    public class Data
+    {
+        public string click_action { get; set; }
+        public string sound { get; set; }
     }
 
     public class Notification
